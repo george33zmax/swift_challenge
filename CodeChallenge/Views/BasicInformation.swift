@@ -20,7 +20,7 @@ class BasicInformation: UICollectionViewCell {
     
     let usernameInput = { () -> UITextField in
         let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "IOS User", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        tf.attributedPlaceholder = NSAttributedString(string: "Username", attributes: [NSAttributedString.Key.foregroundColor: UIColor.subtitles])
         tf.font = .systemFont(ofSize: 18, weight: .regular)
         tf.keyboardType = .default
         tf.borderStyle = .none
@@ -28,7 +28,7 @@ class BasicInformation: UICollectionViewCell {
     }()
     let firstNameInput = { () -> UITextField in
         let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "Johnny B.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        tf.attributedPlaceholder = NSAttributedString(string: "First Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.subtitles])
         tf.font = .systemFont(ofSize: 18, weight: .regular)
         tf.keyboardType = .default
         tf.borderStyle = .none
@@ -36,7 +36,7 @@ class BasicInformation: UICollectionViewCell {
     }()
     let lastNameInput = { () -> UITextField in
         let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "Goode", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        tf.attributedPlaceholder = NSAttributedString(string: "Last Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.subtitles])
         tf.font = .systemFont(ofSize: 18, weight: .regular)
         tf.keyboardType = .default
         tf.borderStyle = .none

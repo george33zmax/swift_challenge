@@ -30,6 +30,8 @@ class UserProfile: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let basicId = "basicId"
     let passwordId = "passwordId"
     
+    var user: Network.User = Network.User(userName: "", firstName: "", lastName: "")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,6 +42,26 @@ class UserProfile: UICollectionViewController, UICollectionViewDelegateFlowLayou
         collectionView.register(Password.self, forCellWithReuseIdentifier: passwordId)
         
         hideKeyboardWhenTappedAround()
+        
+        Network.fetchProfileData { (result) in
+
+            switch result {
+
+            case .success(let user):
+                print("++user ", user)
+                self.user = user
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+                
+            case .failure(let error):
+                print("error", error)
+                print(error.localizedDescription)
+            }
+
+        }
+        
+        
     }
     
     // Items Size
@@ -75,10 +97,29 @@ class UserProfile: UICollectionViewController, UICollectionViewDelegateFlowLayou
         case "basicInfo":
             let basicInfoCell = collectionView.dequeueReusableCell(withReuseIdentifier: self.basicId, for: indexPath) as! BasicInformation
             
+            basicInfoCell.usernameInput.text = self.user.userName
+            basicInfoCell.firstNameInput.text = self.user.firstName
+            basicInfoCell.lastNameInput.text = self.user.lastName
+            
             basicInfoCell.didSave = { username, firstName, lastName in
-                print("username: ", username)
-                print("firstName: ", firstName)
-                print("lastName: ", lastName)
+                let updatedUser = Network.User(userName: username, firstName: firstName, lastName: lastName)
+                
+                Network.updateUserData(params: updatedUser) { (result) in
+
+                    switch result {
+
+                    case .success(let user):
+                        self.user = user
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                        }
+                        
+                    case .failure(let error):
+                        print("error", error)
+                        print(error.localizedDescription)
+                    }
+
+                }
             }
             
             return basicInfoCell
@@ -86,6 +127,21 @@ class UserProfile: UICollectionViewController, UICollectionViewDelegateFlowLayou
         case "password":
             let passwordCell = collectionView.dequeueReusableCell(withReuseIdentifier: passwordId, for: indexPath) as! Password
             
+            passwordCell.didSave = { paswword, passwordCheck in
+                let newPassword = Network.NewPassword(currentPassword: "current", newPassword: "Canada", checkPassword: "Canada")
+                Network.updateUserPassword(params: newPassword) { (result) in
+
+                    switch result {
+
+                    case .success(let updatedPassword):
+                        print("updatedPassword ", updatedPassword)
+                        
+                    case .failure(let error):
+                        print("error", error)
+                        print(error.localizedDescription)
+                    }
+                }
+            }
             
             return passwordCell
             
